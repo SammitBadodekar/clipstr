@@ -2,10 +2,13 @@
 
 import * as React from "react";
 import {
+  Bell,
+  Bookmark,
   BookOpen,
   Braces,
   ChartColumnBig,
   Clapperboard,
+  Clock,
   Frame,
   Home,
   KeyRound,
@@ -13,9 +16,11 @@ import {
   Map,
   PieChart,
   Send,
+  Settings,
   Settings2,
   SquareTerminal,
 } from "lucide-react";
+import { MdOutlineVideoLibrary } from "react-icons/md";
 
 // import { NavMain } from "@/components/nav-main";
 // import { NavSecondary } from "@/components/nav-secondary";
@@ -31,7 +36,6 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { NavMain } from "./nav-main";
-import { TiMediaFastForwardOutline } from "react-icons/ti";
 import { Rubik_Vinyl } from "next/font/google";
 
 const rubikVinyl = Rubik_Vinyl({
@@ -44,88 +48,57 @@ const data = {
   navMain: [
     {
       title: "Home",
-      url: "/dashboard",
+      url: "/home",
       icon: Home,
       hideArrow: true,
-      isActive: true,
       items: [],
     },
     {
-      title: "API Keys",
-      url: "/dashboard/api-keys",
-      icon: KeyRound,
+      title: "My library",
+      url: "/videos",
+      icon: MdOutlineVideoLibrary,
       hideArrow: true,
-      isActive: true,
       items: [],
     },
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: false,
-      items: [
-        {
-          title: "Data to JSON",
-          url: "/dashboard/playground/data-to-json",
-        },
-        {
-          title: "Website to JSON",
-          url: "/dashboard/playground/website-to-json",
-        },
-      ],
+      title: "Notifications",
+      url: "/notifications",
+      icon: Bell,
+      hideArrow: true,
+      items: [],
     },
     {
-      title: "Documentation",
-      url: "/docs",
-      icon: BookOpen,
+      title: "Watch Later",
+      url: "/watch-later",
+      icon: Bookmark,
       hideArrow: true,
       items: [],
     },
 
     {
+      title: "History",
+      url: "/history",
+      icon: Clock,
+      hideArrow: true,
+      items: [],
+    },
+    {
       title: "Settings",
-      url: "/dashboard/settings",
-      icon: Settings2,
+      url: "/settings",
+      icon: Settings,
       hideArrow: true,
       items: [],
     },
   ],
-  navSecondary: [
-    {
-      title: "Support",
-      url: "#",
-      icon: LifeBuoy,
-    },
-    {
-      title: "Feedback",
-      url: "#",
-      icon: Send,
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
+  navSecondary: [],
+  projects: [],
 };
 
 export function DashboardSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar variant="inset" {...props}>
+    <Sidebar variant="inset" {...props} className="bg-muted/50">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

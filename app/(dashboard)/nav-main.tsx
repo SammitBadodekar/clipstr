@@ -26,7 +26,7 @@ export function NavMain({
   items: {
     title: string;
     url: string;
-    icon: LucideIcon;
+    icon: LucideIcon | React.ComponentType<any>;
     isActive?: boolean;
     hideArrow?: boolean | undefined;
     items?: {
@@ -43,9 +43,12 @@ export function NavMain({
           <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip={item.title}>
-                <Link href={item.url}>
-                  <item.icon />
-                  <span>{item.title}</span>
+                <Link
+                  href={item.url}
+                  className="rounded-full p-4 hover:bg-primary/15"
+                >
+                  <item.icon style={{ height: "1.25rem", width: "1.25rem" }} />
+                  <span className="text-base font-bold">{item.title}</span>
                 </Link>
               </SidebarMenuButton>
               {item.items?.length ? (
@@ -64,7 +67,9 @@ export function NavMain({
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild>
                             <Link href={subItem.url}>
-                              <span>{subItem.title}</span>
+                              <span className="font-medium">
+                                {subItem.title}
+                              </span>
                             </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
