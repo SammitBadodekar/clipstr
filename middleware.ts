@@ -13,11 +13,20 @@ export default async function authMiddleware(request: NextRequest) {
         //get the cookie from the request
         cookie: request.headers.get("cookie") || "",
       },
-    }
+    },
   );
 
   if (!session && !request.nextUrl.pathname.includes("login")) {
     return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  if (
+    session &&
+    session?.user &&
+    (request.nextUrl.pathname.includes("login") ||
+      request.nextUrl.pathname === "/")
+  ) {
+    return NextResponse.redirect(new URL("/home", request.url));
   }
   return NextResponse.next();
 }

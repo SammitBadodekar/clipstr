@@ -13,7 +13,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <SidebarProvider>
         <DashboardSidebar />
         <SidebarInset>
-          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Separator orientation="vertical" className="h-4" />
           {children}
         </SidebarInset>
       </SidebarProvider>

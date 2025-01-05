@@ -34,7 +34,6 @@ export function LoginForm({
                     const data = await signIn.social({
                       provider: "google",
                     });
-                    console.log(data);
                   }}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
