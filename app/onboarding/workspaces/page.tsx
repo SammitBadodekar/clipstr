@@ -28,6 +28,7 @@ import { capitalizeFirstLetter } from "better-auth/react";
 import { Suspense, useEffect } from "react";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Building2, Sparkles, Users } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -130,12 +131,28 @@ const WorkspacePageSuspense = () => {
             </CardContent>
           </div>
 
-          <div className="relative hidden bg-muted md:block">
-            <img
-              src="/placeholder.svg"
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-            />
+          <div className="relative hidden bg-gradient-to-b from-green-100 to-green-50 p-6 md:flex md:flex-col md:items-center md:justify-center">
+            {/* Decorative Elements */}
+            <div className="absolute left-8 top-8 rounded-full bg-green-200 p-4">
+              <Users className="h-6 w-6 text-green-600" />
+            </div>
+            <div className="absolute right-12 top-24 rounded-full bg-green-200 p-4">
+              <Building2 className="h-6 w-6 text-green-600" />
+            </div>
+            <div className="absolute bottom-20 left-1/4 rounded-full bg-green-200 p-4">
+              <Sparkles className="h-6 w-6 text-green-600" />
+            </div>
+
+            {/* Text Content */}
+            <div className="mt-8 max-w-md text-center">
+              <h2 className="text-2xl font-semibold text-green-900">
+                Collaborate with your team
+              </h2>
+              <p className="mt-4 text-green-800">
+                Create, share, and organize your video messages in one central
+                workspace
+              </p>
+            </div>
           </div>
         </div>
       </Card>

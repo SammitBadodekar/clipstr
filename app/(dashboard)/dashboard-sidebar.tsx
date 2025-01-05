@@ -36,12 +36,12 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { NavMain } from "./nav-main";
-import { Rubik_Vinyl } from "next/font/google";
+import { Jersey_15 } from "next/font/google";
 import { WorkspaceSwitcher } from "./workspace-switcher";
 import { workspace } from "@/db/schema";
 
-const rubikVinyl = Rubik_Vinyl({
-  variable: "--font-rubik-vinyl",
+const SixtyfourFont = Jersey_15({
+  variable: "--font-Jersey_15",
   subsets: ["latin"],
   weight: ["400"],
 });
@@ -90,9 +90,24 @@ const data = {
 };
 
 export function DashboardSidebar({ workspaces }: { workspaces: workspace[] }) {
+  const getCurrentWorkspace = (): workspace => {
+    const currentWorkspaceId = localStorage.getItem("currentWorkspaceId");
+    if (currentWorkspaceId) {
+      return (
+        workspaces.find((w) => w.id === currentWorkspaceId) ?? workspaces[0]
+      );
+    } else {
+      return workspaces[0];
+    }
+  };
   const [currentWorkspace, setCurrentWorkspace] = React.useState<workspace>(
-    workspaces[0],
+    getCurrentWorkspace(),
   );
+
+  React.useEffect(() => {
+    localStorage.setItem("currentWorkspaceId", currentWorkspace.id);
+  }, [currentWorkspace]);
+
   return (
     <Sidebar variant="inset" className="bg-muted/50">
       <SidebarHeader>
@@ -100,14 +115,14 @@ export function DashboardSidebar({ workspaces }: { workspaces: workspace[] }) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-primary">
                   <Clapperboard className="size-8" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span
-                    className={`${rubikVinyl.className} truncate text-2xl font-black`}
+                    className={`${SixtyfourFont.className} truncate text-4xl font-black text-primary`}
                   >
-                    ClipStr
+                    Clipstr
                   </span>
                 </div>
               </Link>
@@ -115,7 +130,7 @@ export function DashboardSidebar({ workspaces }: { workspaces: workspace[] }) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="flex flex-col gap-6">
         <WorkspaceSwitcher
           workspaces={workspaces}
           currentWorkspace={currentWorkspace}
