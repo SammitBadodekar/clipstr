@@ -26,7 +26,7 @@ export default async function authMiddleware(request: NextRequest) {
     (request.nextUrl.pathname.includes("login") ||
       request.nextUrl.pathname === "/")
   ) {
-    return NextResponse.redirect(new URL("/home", request.url));
+    return NextResponse.redirect(new URL("/videos", request.url));
   }
   return NextResponse.next();
 }

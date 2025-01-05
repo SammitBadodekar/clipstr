@@ -16,13 +16,12 @@ export function LoginForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden">
-        {/* max-h-[750px] min-h-[calc(100vh_-_8rem)] */}
         <div className="grid p-0 md:grid-cols-2">
           <div>
             <CardHeader className="text-center">
               <CardTitle className="text-xl">Welcome back</CardTitle>
               <CardDescription>
-                Login with your Apple or Google account
+                Login with your Google or Github account
               </CardDescription>
             </CardHeader>
             <div className="grid gap-6 p-12 pb-48">

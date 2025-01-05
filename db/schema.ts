@@ -1,3 +1,4 @@
+import { InferSelectModel } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -208,3 +209,5 @@ export const relatedVideos = pgTable(
     pk: primaryKey({ columns: [table.sourceVideoId, table.relatedVideoId] }),
   }),
 );
+
+export type workspace = InferSelectModel<typeof workspace>;

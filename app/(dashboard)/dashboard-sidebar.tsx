@@ -37,6 +37,8 @@ import {
 import Link from "next/link";
 import { NavMain } from "./nav-main";
 import { Rubik_Vinyl } from "next/font/google";
+import { WorkspaceSwitcher } from "./workspace-switcher";
+import { workspace } from "@/db/schema";
 
 const rubikVinyl = Rubik_Vinyl({
   variable: "--font-rubik-vinyl",
@@ -46,13 +48,6 @@ const rubikVinyl = Rubik_Vinyl({
 
 const data = {
   navMain: [
-    {
-      title: "Home",
-      url: "/home",
-      icon: Home,
-      hideArrow: true,
-      items: [],
-    },
     {
       title: "My library",
       url: "/videos",
@@ -94,11 +89,12 @@ const data = {
   projects: [],
 };
 
-export function DashboardSidebar({
-  ...props
-}: React.ComponentProps<typeof Sidebar>) {
+export function DashboardSidebar({ workspaces }: { workspaces: workspace[] }) {
+  const [currentWorkspace, setCurrentWorkspace] = React.useState<workspace>(
+    workspaces[0],
+  );
   return (
-    <Sidebar variant="inset" {...props} className="bg-muted/50">
+    <Sidebar variant="inset" className="bg-muted/50">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -120,9 +116,14 @@ export function DashboardSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
+        <WorkspaceSwitcher
+          workspaces={workspaces}
+          currentWorkspace={currentWorkspace}
+          onWorkspaceSelect={(workspace) => setCurrentWorkspace(workspace)}
+          onInviteClick={() => {}}
+        />
         <NavMain items={data.navMain} />
       </SidebarContent>
-      <SidebarFooter>{/* <NavUser /> */}</SidebarFooter>
     </Sidebar>
   );
 }

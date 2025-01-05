@@ -1,0 +1,146 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { createWorkspace } from "@/app/actions";
+import { authClient } from "@/lib/auth";
+import { capitalizeFirstLetter } from "better-auth/react";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
+
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Workspace name must be at least 2 characters.",
+  }),
+  description: z.string().optional(),
+});
+
+const WorkspacePage = () => {
+  const { data: session, isPending, error } = authClient.useSession();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const newWorkspace = searchParams.get("new");
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+    },
+  });
+
+  useEffect(() => {
+    if (!isPending && !newWorkspace) {
+      form.reset({
+        name: `${capitalizeFirstLetter(session?.user?.name ?? "")}'s Workspace`,
+        description: "",
+      });
+    }
+  }, [session, isPending, form]);
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    toast.promise(createWorkspace(values.name, values.description ?? ""), {
+      loading: "Creating workspace...",
+      success: (data) => {
+        router.push("/videos");
+        return `Workspace created successfully`;
+      },
+      error: "An error occurred while creating the workspace, please try again",
+      position: "top-center",
+    });
+  }
+
+  return (
+    <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
+      <Card className="w-full max-w-sm overflow-hidden md:max-w-3xl">
+        <div className="grid p-0 md:grid-cols-2">
+          <div>
+            <CardHeader className="text-center">
+              <CardTitle className="text-xl">Create Workspace</CardTitle>
+              <CardDescription>Set up your new workspace</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-8"
+                >
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="My Workspace" {...field} />
+                        </FormControl>
+                        <FormDescription>
+                          This is your workspace's visible name.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Description</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Describe your workspace"
+                            className="resize-none"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          A brief description of your workspace (optional).
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="w-full">
+                    Create Workspace
+                  </Button>
+                </form>
+              </Form>
+            </CardContent>
+          </div>
+
+          <div className="relative hidden bg-muted md:block">
+            <img
+              src="/placeholder.svg"
+              alt="Image"
+              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+            />
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
+};
+
+export default WorkspacePage;
