@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { createWorkspace } from "@/app/actions";
 import { authClient } from "@/lib/auth";
 import { capitalizeFirstLetter } from "better-auth/react";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -36,7 +36,7 @@ const formSchema = z.object({
   description: z.string().optional(),
 });
 
-const WorkspacePage = () => {
+const WorkspacePageSuspense = () => {
   const { data: session, isPending, error } = authClient.useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -140,6 +140,14 @@ const WorkspacePage = () => {
         </div>
       </Card>
     </div>
+  );
+};
+
+const WorkspacePage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <WorkspacePageSuspense />
+    </Suspense>
   );
 };
 
